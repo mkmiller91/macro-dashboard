@@ -5,73 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Macro Dashboard</title>
 <style>
-:root{--bg:#f3f5f7;--ink:#14213d;--muted:#566275;--line:#0b6e99;--grid:#d9dfe6;--neg:#b3261e;--box:#fff3cd;--boxb:#c9a227}
-@media (prefers-color-scheme:dark){:root{--bg:#10151c;--ink:#e6ebf2;--muted:#9aa6b6;--line:#5cb8e6;--grid:#2a333f;--neg:#ff8a80;--box:#2b2510;--boxb:#8a7424}}
+:root{--bg:#eef1f5;--panel:#fff;--ink:#0b1f3a;--muted:#51627a;--accent:#0e6ba8;--rule:#d5dce5;--grid:#e6ebf1;--neg:#b3261e;--nbg:#e8f0fa;--nb:#7fa3cc;--head:#0b1f3a}
+@media (prefers-color-scheme:dark){:root{--bg:#0c121b;--panel:#141c27;--ink:#e8eef6;--muted:#97a6ba;--accent:#5db4ea;--rule:#27323f;--grid:#222d3a;--neg:#ff8a80;--nbg:#12233a;--nb:#3b6290;--head:#0a1018}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:860px;margin:0 auto;padding:28px 18px 56px}
-h1{font:700 2rem/1.15 Georgia,"Times New Roman",serif;margin:0 0 6px}
-h2{font:700 1.25rem/1.25 Georgia,"Times New Roman",serif;margin:0 0 2px}
-.lead{color:var(--muted);margin:0 0 18px;max-width:62ch}
-.notice{background:var(--box);border:2px solid var(--boxb);border-radius:6px;padding:12px 14px;margin:0 0 10px;font-weight:700}
-.legal{font-size:.9rem;color:var(--muted);margin:0 0 22px;max-width:70ch}
-a{color:var(--line)}
-.bar{display:flex;gap:8px;align-items:center;margin:0 0 6px;flex-wrap:wrap}
-.bar span{color:var(--muted);font-size:.9rem}
-button{font:inherit;font-size:.9rem;padding:4px 12px;border:1px solid var(--grid);background:transparent;color:var(--ink);border-radius:4px;cursor:pointer}
-button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-button:focus-visible{outline:2px solid var(--line);outline-offset:2px}
-section{border-top:2px solid var(--ink);padding:14px 0 22px}
-.out{color:var(--muted);font-size:.95rem;margin:0 0 6px;min-height:1.6em}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+.top{background:var(--head);color:#fff;padding:22px 18px 20px}
+.wrap{max-width:1040px;margin:0 auto}
+h1{margin:0;font-size:1.65rem;font-weight:650;letter-spacing:-.01em}
+.tag{margin:4px 0 0;color:#b8c6da;font-size:.95rem}
+main{max-width:1040px;margin:0 auto;padding:18px 18px 48px}
+.notice{margin:0 0 8px;padding:11px 14px;background:var(--nbg);border:1px solid var(--nb);border-left:5px solid var(--accent);border-radius:3px;font-weight:650}
+.legal{margin:0 0 18px;font-size:.85rem;color:var(--muted)}
+a{color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden;margin:0 0 20px}
+.kpi{background:var(--panel);padding:12px 14px}
+.kpi .l{font-size:.82rem;color:var(--muted)}
+.kpi .v{font-size:1.55rem;font-weight:650;line-height:1.25}
+.kpi .d{font-size:.78rem;color:var(--muted)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;flex-wrap:wrap}
+.bar h2{margin:0;font-size:1.05rem}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.seg button{font:inherit;font-size:.85rem;padding:5px 12px;border:0;border-right:1px solid var(--rule);background:var(--panel);color:var(--ink);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#charts>p{grid-column:1/-1}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:16px 18px}
+.panel:last-child:nth-child(odd){grid-column:1/-1}
+h3{margin:0;font-size:1.02rem;font-weight:650}
+.one{margin:2px 0 8px;font-size:.9rem;color:var(--muted)}
+.out{margin:0 0 4px;font-size:.88rem;min-height:1.4em}
 svg{width:100%;height:auto;display:block;touch-action:pan-y}
-.ln{fill:none;stroke:var(--line);stroke-width:2;stroke-linejoin:round}
+.ln{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
 .gl{stroke:var(--grid);stroke-width:1}
 .zr{stroke:var(--neg);stroke-width:1.5;stroke-dasharray:5 4}
 .tx{fill:var(--muted);font-size:13px}
-.dot{fill:var(--line)}
+.dot{fill:var(--accent)}
 .vl{stroke:var(--muted);stroke-width:1}
-.explain{margin:10px 0 0;max-width:70ch}
-.src{margin:12px 0 0;font-size:.78rem;color:var(--muted);white-space:pre-line;max-width:80ch}
-footer{border-top:2px solid var(--ink);padding-top:14px;font-size:.9rem;color:var(--muted);max-width:75ch}
-footer p{margin:0 0 10px}
+.ser{margin:6px 0 0;font-size:.76rem;color:var(--muted)}
+details{margin-top:8px}
+summary{cursor:pointer;color:var(--accent);font-size:.88rem;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+details[open] .more,details:not([open]) .less{display:none}
+.exp{margin:8px 0 0;font-size:.9rem}
+.src{margin:8px 0 0;font-size:.76rem;color:var(--muted);white-space:pre-line}
+footer{margin-top:24px;padding-top:12px;border-top:1px solid var(--rule);font-size:.82rem;color:var(--muted)}
+footer p{margin:0 0 6px}
+@media (max-width:760px){#charts{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+<header class="top"><div class="wrap">
+  <h1>Macro Dashboard</h1>
+  <p class="tag">Key U.S. economic measures. <span id="updated"></span></p>
+</div></header>
+
 <main>
-<h1>Macro Dashboard</h1>
-<p class="lead">Five widely followed U.S. economic measures, refreshed daily, with plain-English notes on what each one tracks. For learning only.</p>
-
 <p class="notice">This product uses the FRED&reg; API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.</p>
-<p class="legal">By using this site, you agree to be bound by the <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" target="_blank" rel="noopener">FRED&reg; API Terms of Use</a>. This site is educational only and is not financial, investment, or insurance advice. <span id="updated"></span></p>
+<p class="legal">By using this site, you agree to be bound by the <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" target="_blank" rel="noopener">FRED&reg; API Terms of Use</a>. For education only; not financial, investment, or insurance advice.</p>
 
-<div class="bar" role="group" aria-label="Time range">
-  <span>Show:</span>
-  <button type="button" data-y="2">2 years</button>
-  <button type="button" data-y="5" aria-pressed="true">5 years</button>
-  <button type="button" data-y="0">All (since 2015)</button>
+<div class="kpis" id="kpis"></div>
+
+<div class="bar">
+  <h2>Trends</h2>
+  <div class="seg" role="group" aria-label="Time range">
+    <button type="button" data-y="2">2Y</button>
+    <button type="button" data-y="5" aria-pressed="true">5Y</button>
+    <button type="button" data-y="0">All</button>
+  </div>
 </div>
 
-<div id="charts"><p class="lead" id="status">Loading data&hellip;</p></div>
+<div id="charts"><p id="status">Loading data&hellip;</p></div>
 
 <footer>
-  <p><strong>Privacy.</strong> This site has no analytics, cookies, forms, or trackers, and it does not collect information about visitors. It is hosted on GitHub Pages, which may keep standard server logs under GitHub&rsquo;s own policies.</p>
-  <p><strong>Data.</strong> Retrieved through the FRED&reg; API. Each chart shows the source notes supplied with its series. Data may be revised by its source and is provided as is, with no warranty.</p>
-  <p><a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" target="_blank" rel="noopener">FRED&reg; API Terms of Use</a></p>
+  <p><strong>Privacy:</strong> no analytics, cookies, forms, or trackers, and no visitor information is collected by this site. It is hosted on GitHub Pages, which may keep standard server logs under its own policies.</p>
+  <p><strong>Data:</strong> retrieved through the FRED&reg; API and provided as is, with no warranty. Source notes are under &ldquo;Read more&rdquo; on each chart.</p>
 </footer>
 </main>
 
 <script>
 const CFG = [
-  {id:"FEDFUNDS", title:"Federal funds rate", monthly:true, fmt:v=>v.toFixed(2)+"%",
-   explain:"The interest rate banks charge each other for overnight loans. The Federal Reserve sets a target range for it, and it influences many other rates, including those on savings accounts, credit cards, and loans."},
-  {id:"UNRATE", title:"Unemployment rate", monthly:true, fmt:v=>v.toFixed(1)+"%",
-   explain:"The share of people in the labor force who do not have a job and are actively looking for one. It is one of the main gauges of how healthy the job market is."},
-  {id:"CPIAUCSL", title:"Inflation (12-month change in consumer prices)", monthly:true, yoy:true, fmt:v=>v.toFixed(1)+"%",
-   explain:"How much the average price of a basket of consumer goods and services has risen compared with the same month a year earlier. The source series is the Consumer Price Index; the chart shows the 12-month percent change, which this page calculates from the index."},
-  {id:"T10Y2Y", title:"10-year minus 2-year Treasury yield spread", monthly:false, zero:true, fmt:v=>v.toFixed(2)+" pts",
-   explain:"The yield on 10-year U.S. Treasury notes minus the yield on 2-year notes. When the line drops below zero (the dashed line), the yield curve is said to be inverted. Inversions have often come before recessions, but the timing varies and the signal is not a forecast."},
-  {id:"DGS10", title:"10-year Treasury yield", monthly:false, fmt:v=>v.toFixed(2)+"%",
-   explain:"The annual return investors earn on 10-year U.S. Treasury notes. It is a benchmark long-term interest rate that is often used as a reference point for other borrowing costs."}
+  {id:"FEDFUNDS", short:"Fed funds rate", title:"Federal funds rate", monthly:true, fmt:v=>v.toFixed(2)+"%",
+   one:"The overnight rate banks charge each other, guided by the Federal Reserve.",
+   explain:"The federal funds rate is what banks charge each other for overnight loans. The Federal Reserve sets a target range for it, and it influences many other rates, including those on savings accounts, credit cards, and loans."},
+  {id:"UNRATE", short:"Unemployment", title:"Unemployment rate", monthly:true, fmt:v=>v.toFixed(1)+"%",
+   one:"Share of the labor force that is jobless and looking for work.",
+   explain:"The unemployment rate is the share of people in the labor force who do not have a job and are actively looking for one. It is one of the main gauges of how healthy the job market is."},
+  {id:"CPIAUCSL", short:"Inflation, 12-month", title:"Inflation (12-month change in consumer prices)", monthly:true, yoy:true, fmt:v=>v.toFixed(1)+"%",
+   one:"How much consumer prices rose compared with a year earlier.",
+   explain:"This shows how much the average price of a basket of consumer goods and services has risen compared with the same month a year earlier. The source series is the Consumer Price Index; the chart shows the 12-month percent change, which this page calculates from the index."},
+  {id:"T10Y2Y", short:"10Y minus 2Y yield", title:"10-year minus 2-year Treasury yield spread", monthly:false, zero:true, fmt:v=>v.toFixed(2)+" pts",
+   one:"Long-term minus short-term Treasury yields. Below zero is called an inverted curve.",
+   explain:"This is the yield on 10-year U.S. Treasury notes minus the yield on 2-year notes. When the line drops below zero (the dashed line), the yield curve is said to be inverted. Inversions have often come before recessions, but the timing varies and the signal is not a forecast."},
+  {id:"DGS10", short:"10-year Treasury", title:"10-year Treasury yield", monthly:false, fmt:v=>v.toFixed(2)+"%",
+   one:"A benchmark long-term interest rate.",
+   explain:"This is the annual return investors earn on 10-year U.S. Treasury notes. It is a benchmark long-term interest rate that is often used as a reference point for other borrowing costs."}
 ];
 const NS = "http://www.w3.org/2000/svg";
 const W = 800, H = 300, L = 54, R = 12, T = 10, B = 28;
@@ -91,6 +120,13 @@ function fmtDate(d, monthly){
 }
 function showOut(ch, p, label){
   ch.out.textContent = label + fmtDate(p.d, ch.c.monthly) + ": " + ch.c.fmt(p.v);
+}
+function yearChange(pts){
+  const last = pts[pts.length - 1], t = new Date(last.d);
+  t.setUTCFullYear(t.getUTCFullYear() - 1);
+  let prev = null;
+  for (const q of pts){ if (q.d <= t) prev = q; else break; }
+  return prev ? last.v - prev.v : null;
 }
 
 function draw(ch){
@@ -115,6 +151,12 @@ function draw(ch){
   const Y = v => T + (hi - v) / (hi - lo) * (H - T - B);
   ch.X = X; ch.Y = Y; ch.t0 = t0; ch.t1 = t1;
 
+  const gid = "g" + ch.c.id;
+  const defs = el("defs", {}, svg);
+  const g = el("linearGradient", {id:gid, x1:0, y1:0, x2:0, y2:1}, defs);
+  el("stop", {offset:"0%", style:"stop-color:var(--accent);stop-opacity:.28"}, g);
+  el("stop", {offset:"100%", style:"stop-color:var(--accent);stop-opacity:0"}, g);
+
   for (let i = 0; i <= 4; i++){
     const v = lo + (hi - lo) * i / 4, y = Y(v);
     el("line", {x1:L, x2:W - R, y1:y, y2:y, class:"gl"}, svg);
@@ -122,18 +164,17 @@ function draw(ch){
     t.textContent = v.toFixed(Math.abs(hi - lo) < 5 ? 1 : 0);
   }
   const spanYears = (t1 - t0) / 31557600000;
-  const step = Math.max(1, Math.ceil(spanYears / 6));
-  const y0 = new Date(t0).getUTCFullYear() + 1;
-  for (let yr = y0; Date.UTC(yr, 0, 1) <= t1; yr += step){
-    const x = X(Date.UTC(yr, 0, 1));
-    const t = el("text", {x:x, y:H - 8, "text-anchor":"middle", class:"tx"}, svg);
+  const step = Math.max(1, Math.ceil(spanYears / 5));
+  for (let yr = new Date(t0).getUTCFullYear() + 1; Date.UTC(yr, 0, 1) <= t1; yr += step){
+    const t = el("text", {x:X(Date.UTC(yr, 0, 1)), y:H - 8, "text-anchor":"middle", class:"tx"}, svg);
     t.textContent = yr;
   }
-  if (lo < 0 && hi > 0){
-    el("line", {x1:L, x2:W - R, y1:Y(0), y2:Y(0), class:"zr"}, svg);
-  }
-  el("polyline", {points: pts.map(p => X(p.d.getTime()).toFixed(1) + "," + Y(p.v).toFixed(1)).join(" "), class:"ln"}, svg);
-  ch.vl = el("line", {y1:T, y2:H - B, class:"vl", visibility:"hidden"}, svg);
+  if (lo < 0 && hi > 0) el("line", {x1:L, x2:W - R, y1:Y(0), y2:Y(0), class:"zr"}, svg);
+  const line = pts.map(p => X(p.d.getTime()).toFixed(1) + "," + Y(p.v).toFixed(1)).join(" ");
+  const base = H - B;
+  el("polygon", {points: X(t0).toFixed(1) + "," + base + " " + line + " " + X(t1).toFixed(1) + "," + base, fill:"url(#" + gid + ")"}, svg);
+  el("polyline", {points:line, class:"ln"}, svg);
+  ch.vl = el("line", {y1:T, y2:base, class:"vl", visibility:"hidden"}, svg);
   ch.dot = el("circle", {r:4, class:"dot", visibility:"hidden"}, svg);
   showOut(ch, pts[pts.length - 1], "Latest, ");
 }
@@ -155,25 +196,45 @@ function hover(ch, e){
   showOut(ch, p, "");
 }
 
+function node(tag, cls, text){
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text) e.textContent = text;
+  return e;
+}
+
 function build(c, s){
   let pts = s.observations.map(o => ({d:new Date(o.date + "T00:00:00Z"), v:o.value}));
   if (c.yoy){
     const base = pts;
     pts = base.slice(12).map((p, i) => ({d:p.d, v:(p.v / base[i].v - 1) * 100}));
   }
-  const sec = document.createElement("section");
-  const h = document.createElement("h2"); h.textContent = c.title;
-  const out = document.createElement("p"); out.className = "out";
+  const last = pts[pts.length - 1], chg = yearChange(pts);
+
+  const kpi = node("div", "kpi");
+  kpi.append(node("div", "l", c.short), node("div", "v", c.fmt(last.v)),
+    node("div", "d", chg === null ? fmtDate(last.d, c.monthly)
+      : (chg >= 0 ? "+" : "\u2212") + Math.abs(chg).toFixed(2) + " pts vs 1 yr ago"));
+  document.getElementById("kpis").appendChild(kpi);
+
+  const sec = node("section", "panel");
+  const out = node("p", "out");
   out.setAttribute("aria-live", "polite");
   const svg = document.createElementNS(NS, "svg");
   svg.setAttribute("viewBox", "0 0 " + W + " " + H);
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", "Line chart: " + c.title);
-  const ex = document.createElement("p"); ex.className = "explain"; ex.textContent = c.explain;
-  const src = document.createElement("p"); src.className = "src";
-  src.textContent = "Source series " + c.id + ": " + s.title + ". Units: " + s.units + ".\n" + (s.notes || "");
-  sec.append(h, out, svg, ex, src);
+
+  const det = node("details");
+  const sum = node("summary");
+  sum.append(node("span", "more", "Read more"), node("span", "less", "Read less"));
+  det.append(sum, node("p", "exp", c.explain),
+    node("p", "src", "Source series " + c.id + ": " + s.title + ". Units: " + s.units + ".\n" + (s.notes || "")));
+
+  sec.append(node("h3", "", c.title), node("p", "one", c.one), out, svg,
+    node("p", "ser", "Series " + c.id + ", via the FRED\u00AE API"), det);
   document.getElementById("charts").appendChild(sec);
+
   const ch = {c, pts, svg, out};
   svg.addEventListener("pointermove", e => hover(ch, e));
   svg.addEventListener("pointerleave", () => draw(ch));
@@ -181,10 +242,10 @@ function build(c, s){
   draw(ch);
 }
 
-document.querySelectorAll(".bar button").forEach(btn => {
+document.querySelectorAll(".seg button").forEach(btn => {
   btn.addEventListener("click", () => {
     years = Number(btn.dataset.y);
-    document.querySelectorAll(".bar button").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
     charts.forEach(draw);
   });
 });
@@ -193,7 +254,9 @@ fetch("data/series.json")
   .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
   .then(data => {
     document.getElementById("status").remove();
-    if (data.updated) document.getElementById("updated").textContent = "Data last refreshed: " + data.updated + ".";
+    const u = data.updated ? new Date(String(data.updated).replace(" ", "T")) : null;
+    if (u && !isNaN(u)) document.getElementById("updated").textContent =
+      "Data refreshed " + u.toLocaleDateString("en-US", {year:"numeric", month:"short", day:"numeric"}) + ".";
     CFG.forEach(c => { if (data[c.id]) build(c, data[c.id]); });
   })
   .catch(() => {
